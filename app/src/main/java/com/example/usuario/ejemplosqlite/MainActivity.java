@@ -8,9 +8,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-EditText nombre, apellidos,nota;
-Button insertar;
-MiBaseDeDatos baseDeDatos;
+    EditText nombre, apellidos, nota;
+    Button insertar;
+    MiBaseDeDatos baseDeDatos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,26 +20,25 @@ MiBaseDeDatos baseDeDatos;
         apellidos = findViewById(R.id.editTextApellidos);
         nota = findViewById(R.id.editTextNota);
         insertar = findViewById(R.id.button);
-
+        baseDeDatos = new MiBaseDeDatos(this);
         insertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean resultado = false;
+                boolean resultado = false;
 
                 resultado = baseDeDatos.insertar(nombre.getText().toString(),
                         apellidos.getText().toString(),
                         nota.getText().toString());
 
-                if (resultado){
+                if (resultado) {
                     Toast.makeText(MainActivity.this, "Insertado correctamente", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(MainActivity.this, "Error en la insercción.", Toast.LENGTH_SHORT).show();
 
                 }
 
             }
         });
-
 
 
     }
