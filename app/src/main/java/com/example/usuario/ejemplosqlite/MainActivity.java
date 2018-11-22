@@ -1,15 +1,22 @@
 package com.example.usuario.ejemplosqlite;
 
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     EditText nombre, apellidos, nota;
-    Button insertar;
+    Button insertar, listar;
+    ListView lista;
     MiBaseDeDatos baseDeDatos;
 
     @Override
@@ -21,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         nota = findViewById(R.id.editTextNota);
         insertar = findViewById(R.id.button);
         baseDeDatos = new MiBaseDeDatos(this);
+        listar = findViewById(R.id.buttonListar);
+        lista = findViewById(R.id.lista);
+
         insertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +47,34 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+
+        listar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor cursor = baseDeDatos.listar();
+                ArrayAdapter <String> adapter;
+                List<String> list = new ArrayList<String>();
+
+
+
+                if ((cursor!=null) && (cursor.getCount()>0)){
+                    while(cursor.moveToNext()){
+                        String fila = "";
+                        fila+= "ID: "+cursor.getString(0);
+                        fila+= " NOMBRE: "+cursor.getString(1);
+                        fila+= " APELLIDOS: "+cursor.getString(2);
+                        fila+= " NOTA: "+cursor.getString(3);
+                        list.add(fila);
+                    }
+                    adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,list);
+                    lista.setAdapter(adapter);
+                    cursor.close();
+
+                }else{
+                    Toast.makeText(MainActivity.this, "Base de datos vacía.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

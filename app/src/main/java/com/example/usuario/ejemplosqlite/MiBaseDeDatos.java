@@ -2,6 +2,7 @@ package com.example.usuario.ejemplosqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -45,6 +46,12 @@ class MiBaseDeDatos extends SQLiteOpenHelper {
         }else{
             return true;
         }
+
+    }
+    Cursor listar(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor datos = db.rawQuery("SELECT * from "+TABLE_NAME,null);
+        return datos;
 
     }
 }
