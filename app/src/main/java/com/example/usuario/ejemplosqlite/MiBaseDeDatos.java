@@ -30,7 +30,7 @@ class MiBaseDeDatos extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
     }
 
     public boolean insertar(String nombre, String apellidos, String nota){
@@ -52,6 +52,30 @@ class MiBaseDeDatos extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor datos = db.rawQuery("SELECT * from "+TABLE_NAME,null);
         return datos;
+
+    }
+
+    public boolean borrar(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int filasBorradas = db.delete(TABLE_NAME, COL_1+"=?", new String[]{id});
+        db.close();
+        return (filasBorradas>0);
+   }
+
+    public boolean actualizar(String id, String nombre, String apellidos, String nota) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues;
+        contentValues = new ContentValues();
+        contentValues.put(COL_2, nombre);
+        contentValues.put(COL_3, apellidos);
+        contentValues.put(COL_4, nota);
+
+        int filasAfectadas = db.update(TABLE_NAME,contentValues,COL_1+"=?",new String[]{id});
+        db.close();
+        return (filasAfectadas>0);
+
+
 
     }
 }

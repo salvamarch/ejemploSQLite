@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    EditText nombre, apellidos, nota;
-    Button insertar, listar;
+    EditText nombre, apellidos, nota,id;
+    Button insertar, listar, borrar,actualizar;
     ListView lista;
     MiBaseDeDatos baseDeDatos;
 
@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         baseDeDatos = new MiBaseDeDatos(this);
         listar = findViewById(R.id.buttonListar);
         lista = findViewById(R.id.lista);
+        borrar = findViewById(R.id.buttonBorrar);
+        id = findViewById(R.id.editTextID);
+        actualizar = findViewById(R.id.buttonActualizar);
 
         insertar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +78,36 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(MainActivity.this, "Base de datos vacía.", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        borrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean resultado = baseDeDatos.borrar(id.getText().toString());
+                if (resultado){
+                    Toast.makeText(MainActivity.this, "Se ha borrado correctamente", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "Nada que borrar", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        actualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean resultado = baseDeDatos.actualizar(id.getText().toString(),
+                        nombre.getText().toString(),apellidos.getText().toString(),nota.getText().toString());
+
+                if (resultado){
+                    Toast.makeText(MainActivity.this, "Se ha actualizado correctamente", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "Nada que actualizar", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
